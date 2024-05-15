@@ -1,6 +1,7 @@
 """
 Invoice
 """
+
 from decimal import *
 from typing import List, Union, Dict
 from pydantic import Field
