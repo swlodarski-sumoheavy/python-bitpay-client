@@ -1,3 +1,4 @@
+from decimal import *
 from typing import Union, Dict
 
 from bitpay.models.bitpay_model import BitPayModel
@@ -14,8 +15,8 @@ class InvoiceWebhook(BitPayModel):
     id: Union[str, None] = None
     invoice_time: Union[str, None] = None
     order_id: Union[str, None] = None
-    payment_subtotals: Union[Dict[str, int], None] = None
-    payment_totals: Union[Dict[str, int], None] = None
+    payment_subtotals: Union[Dict[str, Decimal], None] = None
+    payment_totals: Union[Dict[str, Decimal], None] = None
     pos_data: Union[str, None] = None
     price: Union[float, None] = None
     status: Union[str, None] = None
