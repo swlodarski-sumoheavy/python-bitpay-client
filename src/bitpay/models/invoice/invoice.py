@@ -2,6 +2,7 @@
 Invoice
 """
 
+from decimal import *
 from typing import List, Union, Dict
 from pydantic import Field
 from .buyer import Buyer
@@ -41,8 +42,8 @@ class Invoice(BitPayModel):
     item_code: Union[str, None] = None
     physical: Union[bool, None] = False
     payment_currencies: Union[List[str], None] = None
-    payment_subtotals: Union[Dict[str, int], None] = None
-    payment_totals: Union[Dict[str, int], None] = None
+    payment_subtotals: Union[Dict[str, Decimal], None] = None
+    payment_totals: Union[Dict[str, Decimal], None] = None
     payment_display_totals: Union[Dict[str, str], None] = None
     payment_display_subtotals: Union[Dict[str, str], None] = None
     payment_codes: Union[Dict[str, Dict[str, str]], None] = None
