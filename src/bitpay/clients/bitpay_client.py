@@ -17,13 +17,15 @@ class BitPayClient:
     __base_url: str
     __ec_key: Optional[str] = None
     __proxy: Optional[str] = None
+    __platform_info: Optional[str] = None
 
     def __init__(
-        self, base_url: str, ec_key: Optional[str] = None, proxy: Optional[str] = None
+        self, base_url: str, ec_key: Optional[str] = None, proxy: Optional[str] = None, platform_info: Optional[str] = None
     ):
         self.__base_url = base_url
         self.__ec_key = ec_key
         self.__proxy = proxy
+        self.__platform_info = platform_info
         self.init()
 
     def init(self) -> None:
@@ -37,6 +39,9 @@ class BitPayClient:
         }
         if self.__proxy is not None:
             self.__headers["proxy"] = self.__proxy
+
+        if self.__platform_info is not None:
+            self.__headers["x-bitpay-platform-info"] = self.__platform_info
 
     def post(
         self, uri: str, form_data: Any = {}, signature_required: bool = True
