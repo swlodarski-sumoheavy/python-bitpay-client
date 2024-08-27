@@ -20,7 +20,11 @@ class BitPayClient:
     __platform_info: Optional[str] = None
 
     def __init__(
-        self, base_url: str, ec_key: Optional[str] = None, proxy: Optional[str] = None, platform_info: Optional[str] = None
+        self,
+        base_url: str,
+        ec_key: Optional[str] = None,
+        proxy: Optional[str] = None,
+        platform_info: Optional[str] = None,
     ):
         self.__base_url = base_url
         self.__ec_key = ec_key

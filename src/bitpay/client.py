@@ -65,7 +65,9 @@ class Client:
         token_container = TokenContainer()
         token_container.add_pos(pos_token)
 
-        bitpay_client = BitPayClient(Client.get_base_url(environment), None, platform_info)
+        bitpay_client = BitPayClient(
+            Client.get_base_url(environment), None, platform_info
+        )
 
         return Client(bitpay_client, token_container, GuidGenerator())
 
@@ -75,7 +77,7 @@ class Client:
         token_container: TokenContainer,
         environment: Environment = Environment.PROD,
         proxy: Optional[str] = None,
-        platform_info: Optional[str] = None
+        platform_info: Optional[str] = None,
     ):
         """
         :raises BitPayGenericException
@@ -126,7 +128,11 @@ class Client:
                 environment = Environment.PROD
 
             return Client.create_client(
-                private_key_or_private_key_path, token_container, environment, proxy, platform_info
+                private_key_or_private_key_path,
+                token_container,
+                environment,
+                proxy,
+                platform_info,
             )
         except Exception as exe:
             BitPayExceptionProvider.throw_generic_exception_with_message(
