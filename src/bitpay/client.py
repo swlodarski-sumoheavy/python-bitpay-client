@@ -61,11 +61,13 @@ class Client:
             )
 
     @staticmethod
-    def create_pos_client(pos_token: str, environment: Environment = Environment.PROD):  # type: ignore
+    def create_pos_client(pos_token: str, environment: Environment = Environment.PROD, platform_info: Optional[str] = None):  # type: ignore
         token_container = TokenContainer()
         token_container.add_pos(pos_token)
 
-        bitpay_client = BitPayClient(Client.get_base_url(environment))
+        bitpay_client = BitPayClient(
+            Client.get_base_url(environment), None, platform_info
+        )
 
         return Client(bitpay_client, token_container, GuidGenerator())
 
@@ -75,6 +77,7 @@ class Client:
         token_container: TokenContainer,
         environment: Environment = Environment.PROD,
         proxy: Optional[str] = None,
+        platform_info: Optional[str] = None,
     ):
         """
         :raises BitPayGenericException
@@ -82,7 +85,7 @@ class Client:
         try:
             base_url = Client.get_base_url(environment)
             ec_key = Client.get_ec_key(private_key_or_private_key_path)
-            bitpay_client = BitPayClient(base_url, ec_key, proxy)
+            bitpay_client = BitPayClient(base_url, ec_key, proxy, platform_info)
             guid_generator = GuidGenerator()
 
             return Client(bitpay_client, token_container, guid_generator)
@@ -92,7 +95,7 @@ class Client:
             )
 
     @staticmethod
-    def create_client_by_config_file_path(config_file_path: str):  # type: ignore
+    def create_client_by_config_file_path(config_file_path: str, platform_info: Optional[str] = None):  # type: ignore
         """
         :raises BitPayGenericException
         """
@@ -125,7 +128,11 @@ class Client:
                 environment = Environment.PROD
 
             return Client.create_client(
-                private_key_or_private_key_path, token_container, environment, proxy
+                private_key_or_private_key_path,
+                token_container,
+                environment,
+                proxy,
+                platform_info,
             )
         except Exception as exe:
             BitPayExceptionProvider.throw_generic_exception_with_message(
