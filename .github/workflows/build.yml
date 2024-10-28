@@ -3,7 +3,29 @@ name: Build
 on: [push, pull_request]
 
 jobs:
-  build-and-test:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.13
+      - name: Install pipenv
+        run: |
+          pip3 install pipenv
+          pip3 install --upgrade pip
+      - name: Install dependencies
+        run: |
+          pipenv install --dev
+          pipenv run pip3 install typing-extensions
+      - name: Check code format
+        run: pipenv run black --check src/
+      - name: Run static analysis
+        run: |
+          pipenv run mypy --install-types --non-interactive src/
+          pipenv run mypy -p src
+
+  test:
     runs-on: ubuntu-latest
 
     strategy:
@@ -23,12 +45,6 @@ jobs:
         run: |
           pipenv install --dev
           pipenv run pip3 install typing-extensions
-      - name: Check code format
-        run: pipenv run black --check src/
-      - name: Run static analysis
-        run: |
-          pipenv run mypy --install-types --non-interactive src/
-          pipenv run mypy -p src
       - name: Run unit tests
         run: pipenv run pytest -vv -s -m unit
       - name: Run a test build
