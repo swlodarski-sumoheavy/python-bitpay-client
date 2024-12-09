@@ -16,7 +16,7 @@ class PayoutRecipient(BitPayModel):
 
     email: Union[str, None] = None
     label: Union[str, None] = None
-    notification_url: str = Field(alias="notificationURL", default=None)
+    notification_url: Union[str, None] = Field(alias="notificationURL", default=None)
     status: Union[str, None] = None
     id: Union[str, None] = None
     shopper_id: Union[str, None] = None
