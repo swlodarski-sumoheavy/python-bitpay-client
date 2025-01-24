@@ -335,17 +335,20 @@ class InvoiceClient:
 
         return invoice
 
-    def request_invoice_notifications(self, invoice_id: str) -> bool:
+    def request_invoice_notifications(
+        self, invoice_id: str, invoice_token: str
+    ) -> bool:
         """
         Request a BitPay Invoice Webhook.
 
         :param str invoice_id: A BitPay invoice ID.
+        :param str invoice_token: The resource token for the invoice_id. This token can be retrieved from the Bitpay's invoice object.
         :return: True if the webhook was successfully requested, false otherwise.
         :rtype: bool
         :raises BitPayApiException
         :raises BitPayGenericException
         """
-        params = {"token": self.__token_container.get_access_token(Facade.MERCHANT)}
+        params = {"token": invoice_token}
         response = self.__bitpay_client.post(
             "invoices/%s" % invoice_id + "/notifications", params
         )

@@ -353,18 +353,21 @@ class Client:
         client = self.create_invoice_client()
         return client.pay(invoice_id, status)
 
-    def request_invoice_notifications(self, invoice_id: str) -> bool:
+    def request_invoice_notifications(
+        self, invoice_id: str, invoice_token: str
+    ) -> bool:
         """
         Request a BitPay Invoice Webhook.
 
         :param str invoice_id: A BitPay invoice ID.
+        :param str invoice_token: The resource token for the invoice_id. This token can be retrieved from the Bitpay's invoice object.
         :return: True if the webhook was successfully requested, false otherwise.
         :rtype: bool
         :raises BitPayException
         :raises InvoiceNotificationException
         """
         client = self.create_invoice_client()
-        return client.request_invoice_notifications(invoice_id)
+        return client.request_invoice_notifications(invoice_id, invoice_token)
 
     def create_refund(
         self,
@@ -501,18 +504,19 @@ class Client:
         client = self.create_refund_client()
         return client.cancel_by_guid(guid)
 
-    def request_refund_notification(self, refund_id: str) -> bool:
+    def request_refund_notification(self, refund_id: str, refund_token: str) -> bool:
         """
         Send a refund notification.
 
         :param str refund_id: BitPay refund ID to notify.
+        :param str refund_token: The resource token for the refund_id. This token can be retrieved from the Bitpay's refund object.
         :return: True if the webhook was successfully requested, false otherwise.
         :rtype: bool
         :raises BitPayException
         :raises RefundNotificationException
         """
         client = self.create_refund_client()
-        return client.request_notification(refund_id)
+        return client.request_notification(refund_id, refund_token)
 
     def get_supported_wallets(self) -> List[Wallet]:
         """
