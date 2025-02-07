@@ -26,6 +26,7 @@ merchant_token_value = "someMerchantToken"
 payout_token_value = "somePayoutToken"
 pos_token_value = "somePosToken"
 invoice_id = "UZjwcYkWAKfTMn9J1yyfs4"
+invoice_token = "someInvoiceToken"
 
 
 def get_bitpay_client(mocker):
@@ -542,14 +543,14 @@ def test_request_invoice_notifications(mocker):
     bitpay_client = get_bitpay_client(mocker)
     response = Mock()
     response.json.return_value = {"data": "success"}
-    params = {"token": merchant_token_value}
+    params = {"token": invoice_token}
     bitpay_client.post.side_effect = mock_response(
         response, "invoices/" + invoice_id + "/notifications", params, True
     )
     client = init_client(mocker, bitpay_client)
 
     # act
-    result = client.request_invoice_notifications(invoice_id)
+    result = client.request_invoice_notifications(invoice_id, invoice_token)
 
     # assert
     assert result is True
@@ -731,17 +732,18 @@ def update_refund_by_guid(mocker):
 def test_send_refund_notification(mocker):
     # arrange
     refund_id = "1234"
+    refund_token = "someRefundToken"
     bitpay_client = get_bitpay_client(mocker)
     response = Mock()
     response.json.return_value = {"status": "success"}
-    params = {"token": merchant_token_value}
+    params = {"token": refund_token}
     bitpay_client.post.side_effect = mock_response(
         response, "refunds/" + refund_id + "/notifications", params, True
     )
     client = init_client(mocker, bitpay_client)
 
     # act
-    result = client.request_refund_notification(refund_id)
+    result = client.request_refund_notification(refund_id, refund_token)
 
     # assert
     assert result is True

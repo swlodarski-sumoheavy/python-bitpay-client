@@ -238,17 +238,18 @@ class RefundClient:
                 "Refund", str(exe)
             )
 
-    def request_notification(self, refund_id: str) -> bool:
+    def request_notification(self, refund_id: str, refund_token: str) -> bool:
         """
         Send a refund notification.
 
         :param str refund_id: BitPay refund ID to notify.
+        :param str refund_token: The resource token for the refund_id. This token can be retrieved from the Bitpay's refund object.
         :return: True if the webhook was successfully requested, false otherwise.
         :rtype: bool
         :raises BitPayApiException
         :raises BitPayGenericException
         """
-        params = {"token": self.__token_container.get_access_token(Facade.MERCHANT)}
+        params = {"token": refund_token}
         response = self.__bitpay_client.post(
             "refunds/%s" % refund_id + "/notifications", params, True
         )
